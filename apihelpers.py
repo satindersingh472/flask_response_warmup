@@ -11,8 +11,12 @@ import json
 def get_display_results(statement,args_list):
     results = conn_exe_close(statement,args_list)
     if(type(results) == list):
+        if(len(results) == 0):
+            return "No results matched your Input"
         return make_response(json.dumps(results, default=str), 200)
     elif(type(results) == str):
+        if(results.startswith('Duplicate entry')):
+            return "Already exists, Please enter different values for username"
         return make_response(json.dumps(results, default=str), 400)
     else:
         return make_response(json.dumps(results, default=str) , 500)
